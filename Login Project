@@ -1,0 +1,59 @@
+import kivy
+kivy.require('1.11.1')
+
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+from kivy.utils import get_color_from_hex
+
+class LoginScreen(BoxLayout):
+    def __init__(self, **kwargs):
+        super(LoginScreen, self).__init__(**kwargs)
+
+        self.orientation = 'vertical'
+        self.spacing = 20
+        self.padding = [50, 50]
+
+        # Title Label
+        self.title_label = Label(text='Megradea', font_size=60, color=get_color_from_hex('#FFFF00'))  # Set color to yellow
+        self.add_widget(self.title_label)
+
+        # Username TextInput and Label
+        self.username_entry = TextInput(multiline=False, font_size=40)
+        self.username_label = Label(text='Username', font_size=40)
+        self.add_widget(self.username_entry)
+        self.add_widget(self.username_label)
+
+        # Password TextInput and Label
+        self.password_entry = TextInput(password=True, multiline=False, font_size=40)
+        self.password_label = Label(text='Passwormd', font_size=40)
+        self.add_widget(self.password_entry)
+        self.add_widget(self.password_label)
+
+        # Login Button
+        self.login_button = Button(text='Login', font_size=50, background_color=get_color_from_hex('#FFFFFF'), color=get_color_from_hex('#0000FF'))  # Set background to white and color to blue
+        self.login_button.bind(on_press=self.login)
+        self.add_widget(self.login_button)
+
+        # Status Label
+        self.status_label = Label(font_size=40)
+        self.add_widget(self.status_label)
+
+    def login(self, instance):
+        username = self.username_entry.text.strip().lower()
+        password = self.password_entry.text.strip()
+
+        # Check if the username and password match
+        if username == 'wandendeyap' and password == '12345':
+            self.status_label.text = 'You have Successfully login'
+        else:
+            self.status_label.text ='' 'Invalid login'
+
+class LoginApp(App):
+    def build(self):
+        return LoginScreen()
+
+if __name__ == '__main__':
+    LoginApp().run();
