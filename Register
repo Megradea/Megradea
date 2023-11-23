@@ -1,0 +1,89 @@
+import re
+from kivy.app import App
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+from kivy.uix.scrollview import ScrollView
+
+# List to store nursery pupil information
+nursery_pupils = []
+
+
+class NurseryPupilDatabase(GridLayout):
+    def __init__(self, **kwargs):
+        super(NurseryPupilDatabase, self).__init__(**kwargs)
+        self.cols = 2
+        self.spacing = [10, 5]  # Adjusted spacing between widgets
+
+        self.add_widget(Label(text='Name:', size_hint=(0.3, None), height=30))
+        self.childname_entry = TextInput(text='Namaranga Ziruna', multiline=False, size_hint=(0.7, None), height=30)
+        self.add_widget(self.childname_entry)
+
+        self.add_widget(Label(text='Dob:', size_hint=(0.3, None), height=30))
+        self.dob_entry = TextInput(text='2021-07-21', multiline=False, size_hint=(0.7, None), height=30)
+        self.add_widget(self.dob_entry)
+
+        self.add_widget(Label(text='Age:', size_hint=(0.3, None), height=30))
+        self.age_entry = TextInput(text='3', multiline=False, size_hint=(0.7, None), height=30)
+        self.add_widget(self.age_entry)
+
+        self.add_widget(Label(text='Parent Name:', size_hint=(0.3, None), height=30))
+        self.parent_entry = TextInput(text='Wandendeya Paul', multiline=False, size_hint=(0.7, None), height=30)
+        self.add_widget(self.parent_entry)
+
+        self.add_widget(Label(text='Phone Number:', size_hint=(0.3, None), height=30))
+        self.phone_entry = TextInput(text='0778161809', multiline=False, size_hint=(0.7, None), height=30)
+        self.add_widget(self.phone_entry)
+
+        self.add_widget(Label(text='Requirements:', size_hint=(0.3, None), height=30))
+        self.requirement_entry = TextInput(text='Special needs', multiline=False, size_hint=(0.7, None), height=30)
+        self.add_widget(self.requirement_entry)
+
+        self.add_widget(Label(text='School Name:', size_hint=(0.3, None), height=30))
+        self.sch_entry = TextInput(text='Wakubona Gad Nursery School', multiline=False, size_hint=(0.7, None), height=30)
+        self.add_widget(self.sch_entry)
+
+        self.register_button = Button(text='Register', size_hint=(0.3, None), height=30)
+        self.register_button.bind(on_press=self.register_pupil)
+        self.add_widget(self.register_button)
+
+        self.display_button = Button(text='Display', size_hint=(0.3, None), height=30)
+        self.display_button.bind(on_press=self.display_pupils)
+        self.add_widget(self.display_button)
+
+        self.pupil_text = TextInput(readonly=True, size_hint=(1, None), height=150, multiline=True)
+        self.add_widget(Label(text='Console:', size_hint=(1, None), height=30))
+        self.add_widget(self.pupil_text)
+
+        self.exercises_button = Button(text='Exercises', size_hint=(0.3, None), height=30)
+        self.exercises_button.bind(on_press=self.display_exercises)
+        self.add_widget(self.exercises_button)
+
+    def register_pupil(self, instance):
+        childname = self.childname_entry.text
+        dob = self.dob_entry.text
+        childage = self.age_entry.text
+        parentname = self.parent_entry.text
+        phonenumber = self.phone_entry.text
+        requirement = self.requirement_entry.text
+        sch = self.sch_entry.text
+
+        if childname and childage:
+            # Phone number validation
+            if not re.match(r'^\d{10}$', phonenumber):
+                self.pupil_text.text += "Invalid phone number. Please enter a 10-digit number.\n"
+                return
+
+            pupil = {
+                "ChildName": childname,
+                "Dob": dob,
+                "Age": childage,
+                "ParentName": parentname,
+                "PhoneNumber": phonenumber,
+                "Requirements": requirement,
+                "SchName": sch
+            }
+            nursery_pupils.append(pupil)
+
+            self.pupil_text.text += f"ChildName: {childname}, Dob: {dob}, Parent: {parentname
